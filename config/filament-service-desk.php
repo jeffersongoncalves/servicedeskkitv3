@@ -1,28 +1,93 @@
 <?php
 
+use JeffersonGoncalves\FilamentServiceDesk\Admin\Resources\BusinessHoursScheduleResource;
+use JeffersonGoncalves\FilamentServiceDesk\Admin\Resources\CannedResponseResource;
+use JeffersonGoncalves\FilamentServiceDesk\Admin\Resources\CategoryResource;
+use JeffersonGoncalves\FilamentServiceDesk\Admin\Resources\DepartmentResource;
+use JeffersonGoncalves\FilamentServiceDesk\Admin\Resources\EmailChannelResource;
+use JeffersonGoncalves\FilamentServiceDesk\Admin\Resources\EscalationRuleResource;
+use JeffersonGoncalves\FilamentServiceDesk\Admin\Resources\KbArticleResource;
+use JeffersonGoncalves\FilamentServiceDesk\Admin\Resources\KbCategoryResource;
+use JeffersonGoncalves\FilamentServiceDesk\Admin\Resources\ServiceCategoryResource;
+use JeffersonGoncalves\FilamentServiceDesk\Admin\Resources\ServiceResource;
+use JeffersonGoncalves\FilamentServiceDesk\Admin\Resources\SlaPolicyResource;
+use JeffersonGoncalves\FilamentServiceDesk\Admin\Resources\TagResource;
+use JeffersonGoncalves\FilamentServiceDesk\Admin\Resources\TicketResource;
+use JeffersonGoncalves\FilamentServiceDesk\Admin\Widgets\ServiceDeskOverviewWidget;
+use JeffersonGoncalves\FilamentServiceDesk\Admin\Widgets\SlaComplianceWidget;
+use JeffersonGoncalves\FilamentServiceDesk\Admin\Widgets\TicketsByDepartmentWidget;
+use JeffersonGoncalves\FilamentServiceDesk\Agent\Widgets\AgentTicketStatsWidget;
+use JeffersonGoncalves\FilamentServiceDesk\Agent\Widgets\SlaBreachWidget;
+use JeffersonGoncalves\FilamentServiceDesk\User\Resources\ServiceRequestResource;
+use JeffersonGoncalves\FilamentServiceDesk\User\Widgets\MyTicketsOverviewWidget;
+
 return [
 
     /*
     |--------------------------------------------------------------------------
-    | Navigation
+    | Admin Panel Configuration
     |--------------------------------------------------------------------------
     */
+    'admin' => [
+        'navigation_group' => 'Service Desk',
+        'navigation_icon' => 'heroicon-o-lifebuoy',
+        'navigation_sort' => null,
+        'resources' => [
+            'department' => DepartmentResource::class,
+            'category' => CategoryResource::class,
+            'tag' => TagResource::class,
+            'canned_response' => CannedResponseResource::class,
+            'ticket' => TicketResource::class,
+            'sla_policy' => SlaPolicyResource::class,
+            'escalation_rule' => EscalationRuleResource::class,
+            'business_hours_schedule' => BusinessHoursScheduleResource::class,
+            'email_channel' => EmailChannelResource::class,
+            'kb_article' => KbArticleResource::class,
+            'kb_category' => KbCategoryResource::class,
+            'service' => ServiceResource::class,
+            'service_category' => ServiceCategoryResource::class,
+        ],
+        'widgets' => [
+            ServiceDeskOverviewWidget::class,
+            SlaComplianceWidget::class,
+            TicketsByDepartmentWidget::class,
+        ],
+    ],
 
-    'navigation' => [
-        'admin' => [
-            'group' => 'Service Desk',
-            'sort' => null,
-            'icon' => 'heroicon-o-lifebuoy',
+    /*
+    |--------------------------------------------------------------------------
+    | Agent Panel Configuration
+    |--------------------------------------------------------------------------
+    */
+    'agent' => [
+        'navigation_group' => 'Service Desk',
+        'navigation_icon' => 'heroicon-o-headset',
+        'navigation_sort' => null,
+        'resources' => [
+            'ticket' => JeffersonGoncalves\FilamentServiceDesk\Agent\Resources\TicketResource::class,
+            'canned_response' => JeffersonGoncalves\FilamentServiceDesk\Agent\Resources\CannedResponseResource::class,
         ],
-        'agent' => [
-            'group' => 'Service Desk',
-            'sort' => null,
-            'icon' => 'heroicon-o-headset',
+        'widgets' => [
+            AgentTicketStatsWidget::class,
+            SlaBreachWidget::class,
         ],
-        'user' => [
-            'group' => 'Support',
-            'sort' => null,
-            'icon' => 'heroicon-o-ticket',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | User Panel Configuration
+    |--------------------------------------------------------------------------
+    */
+    'user' => [
+        'navigation_group' => 'Support',
+        'navigation_icon' => 'heroicon-o-ticket',
+        'navigation_sort' => null,
+        'resources' => [
+            'ticket' => JeffersonGoncalves\FilamentServiceDesk\User\Resources\TicketResource::class,
+            'service_request' => ServiceRequestResource::class,
+        ],
+        'widgets' => [
+            MyTicketsOverviewWidget::class,
         ],
     ],
 
@@ -45,62 +110,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Resources
+    | Attachments
     |--------------------------------------------------------------------------
     |
-    | Override the default resource classes used by the plugins.
-    | Set to null to use the default.
+    | Configure file upload settings for ticket attachments.
+    | The allowed_extensions are resolved to MIME types using Symfony MimeTypes.
     |
     */
 
-    'resources' => [
-        'admin' => [
-            'department' => null,
-            'category' => null,
-            'tag' => null,
-            'canned_response' => null,
-            'ticket' => null,
-            'sla_policy' => null,
-            'escalation_rule' => null,
-            'business_hours_schedule' => null,
-            'email_channel' => null,
-            'kb_article' => null,
-            'kb_category' => null,
-            'service' => null,
-            'service_category' => null,
-        ],
-        'agent' => [
-            'ticket' => null,
-            'canned_response' => null,
-        ],
-        'user' => [
-            'ticket' => null,
-            'service_request' => null,
-        ],
-    ],
-
-    /*
-    |--------------------------------------------------------------------------
-    | Widgets
-    |--------------------------------------------------------------------------
-    |
-    | Override the default widget classes. Set to null to use the default.
-    |
-    */
-
-    'widgets' => [
-        'admin' => [
-            'overview' => null,
-            'sla_compliance' => null,
-            'tickets_by_department' => null,
-        ],
-        'agent' => [
-            'ticket_stats' => null,
-            'sla_breach' => null,
-        ],
-        'user' => [
-            'my_tickets_overview' => null,
-        ],
+    'attachments' => [
+        'allowed_extensions' => ['jpg', 'jpeg', 'png', 'gif', 'webp', 'pdf', 'doc', 'docx', 'xls', 'xlsx', 'csv', 'txt', 'zip', 'rar'],
+        'max_file_size' => 10240, // in KB (10MB)
+        'disk' => 'local',
     ],
 
 ];
