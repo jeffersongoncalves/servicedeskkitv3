@@ -2,11 +2,11 @@
 
 namespace App\Filament\Admin\Resources\Admins\Schemas;
 
-use App\Filament\Schemas\Components\AdditionalInformation;
 use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
+use JeffersonGoncalves\Filament\AdditionalInformation\AdditionalInformation;
 
 class AdminInfolist
 {
