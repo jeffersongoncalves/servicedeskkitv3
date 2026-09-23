@@ -60,7 +60,7 @@ updates:
     ignore:
       - dependency-name: tailwindcss
         versions:
-          - '>=5.0'
+          - '>=4.0'
     groups:
       npm-deps:
         patterns:
