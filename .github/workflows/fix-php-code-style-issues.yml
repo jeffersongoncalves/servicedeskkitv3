@@ -24,5 +24,4 @@ jobs:
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@d0b01107b5db882071f96de5dd4b54961ea93f4c # v7
         with:
-          branch: main
           commit_message: Fix styling
